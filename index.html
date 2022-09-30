@@ -1,0 +1,138 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<style>
+
+    body{
+        text-align: center;
+        font-size: 17px;
+        background-image: url("greg-rakozy-oMpAz-DN-9I-unsplash.jpg  ") ;
+    }
+    * {
+        box-sizing: border-box
+    }
+    div.container1{
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    div.container2{
+        max-width: 1400px;
+        background-color: antiquewhite;
+        margin: auto;
+    }
+
+    .container2 {
+        
+        background-color: #baabab;
+        height: auto;
+        padding: 16px;
+        background-color: white;
+        border-radius: 50px;
+    }
+    h1{
+        text-decoration: underline;
+        background-color: rgb(255, 255, 255);
+        border-radius: 50px;
+        width: 1400px;
+    }
+    input[type=text] {
+        width: 20%;
+        display: inline-block;
+        background: #04afff;
+        font-size: 15px;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border-radius: 25px;
+        height: 10px;
+        border-color: #2b1a9b;
+    }
+
+    button {
+        text-align: center;
+        background-color:  rgb(0, 174, 255);
+        color: rgb(157, 0, 0);
+        padding: 16px 20px;
+        margin: 8px 0;
+        border-radius: 25px;
+        width: 10%;
+        opacity: 0.9;
+        height: 40px;
+        border-color: rgb(125, 39, 39);
+    }
+    
+</style>
+
+<body>
+    <div class="container1">
+        <h1><u> <b><i> Todo By Server</i> </b></u></h1>
+    </div>
+
+    <div class="container2">
+        <form onsubmit="postTodo(); return false">
+            <b style="font-size: 22px;"><u>TODO:</u></b> <br><input id="todo" type="text" required><br>
+            <button type="submit">Add</button>
+        </form>
+        <button onclick="getAllTodos()">Refresh</button>
+        <h3 id="result"> </h3>
+    </div>
+
+    <script>
+        function postTodo() {
+            let todoText = document.querySelector("#todo").value
+
+            axios.post(`https://fine-gold-hare-ring.cyclic.app/todo`, {
+                text: todoText
+            })
+                .then(function (response) {
+                    console.log(response.data);
+
+                    document.querySelector("#result").innerHTML = ""
+
+                    response.data.data.map(eachTodo => {
+                        document.querySelector("#result").innerHTML += eachTodo
+                        document.querySelector("#result").innerHTML += '<br>'
+                    })
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+        }
+
+        function getAllTodos() {
+            axios.get(`https://fine-gold-hare-ring.cyclic.app/todos`)
+                .then(function (response) {
+                    console.log(response.data);
+
+                    document.querySelector("#result").innerHTML = ""
+
+                    response.data.data.map(eachTodo => {
+                        document.querySelector("#result").innerHTML += eachTodo
+                        document.querySelector("#result").innerHTML += '<br>'
+                    })
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        setInterval(getAllTodos, 1000);
+
+    </script>
+
+
+</body>
+
+</html>
